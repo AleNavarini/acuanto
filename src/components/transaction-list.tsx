@@ -21,7 +21,6 @@ const transactions = [
     currency: "ARS",
     date: "2023-10-15",
     location: "Buenos Aires",
-    imageUrl: "/placeholder.svg?height=200&width=300",
   },
   {
     id: 2,
@@ -32,7 +31,6 @@ const transactions = [
     currency: "ARS",
     date: "2023-10-12",
     location: "Córdoba",
-    imageUrl: "/placeholder.svg?height=200&width=300",
   },
   {
     id: 3,
@@ -43,7 +41,6 @@ const transactions = [
     currency: "ARS",
     date: "2023-10-10",
     location: "Rosario",
-    imageUrl: "/placeholder.svg?height=200&width=300",
   },
   {
     id: 4,
@@ -54,7 +51,6 @@ const transactions = [
     currency: "ARS",
     date: "2023-10-08",
     location: "Mendoza",
-    imageUrl: "/placeholder.svg?height=200&width=300",
   },
   {
     id: 5,
@@ -65,7 +61,6 @@ const transactions = [
     currency: "ARS",
     date: "2023-10-05",
     location: "Buenos Aires",
-    imageUrl: "/placeholder.svg?height=200&width=300",
   },
 ];
 

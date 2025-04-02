@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Calendar, MapPin } from "lucide-react";
+import { Calendar, MapPin, Car } from "lucide-react";
 
 // Format price with Argentine Peso format
 function formatPrice(price: number): string {
@@ -40,12 +40,16 @@ export default function TransactionCard({ transaction }: TransactionProps) {
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow">
       <div className="relative h-48 w-full">
-        <Image
-          src={imageUrl || "/placeholder.svg"}
-          alt={`${brand} ${model} ${year}`}
-          fill
-          className="object-cover"
-        />
+        {imageUrl ? (
+          <Image
+            src={imageUrl || "/placeholder.svg"}
+            alt={`${brand} ${model} ${year}`}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <Car size="48" className="w-full h-full" />
+        )}
       </div>
       <CardContent className="p-4">
         <h3 className="text-xl font-semibold">
