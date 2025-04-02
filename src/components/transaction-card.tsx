@@ -30,7 +30,7 @@ interface TransactionProps {
     currency: string;
     date: string;
     location: string;
-    imageUrl: string;
+    imageUrl?: string;
   };
 }
 
