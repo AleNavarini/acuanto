@@ -13,7 +13,6 @@ model CarModel {
   make      String // e.g., "Toyota", "Ford"
   model     String // e.g., "Camry", "Mustang"
   version   String // e.g., "XEI"
-  year      Int // e.g., 2020
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -25,6 +24,7 @@ model CarModel {
 model CarSale {
   id         Int      @id @default(autoincrement())
   carModelId Int // Foreign key linking to CarModel
+  carYear    Int // e.g., 2020
   priceUsd   Float // Sale price in USD
   priceArs   Float // Sale price in ARS
   saleDate   DateTime // Date of the sale
