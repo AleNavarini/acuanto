@@ -6,32 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { Combobox } from "@/components/ui/combobox";
+import { provinces } from "@/data/provinces"
+import { carBrands } from "@/data/carBrands"
 
 const generateYears = () => {
   const year = new Date().getFullYear();
   return Array.from({ length: 31 }, (_, i) => (year - i).toString());
 };
 
-const carBrands = [
-  { value: "Toyota", label: "Toyota" }, { value: "Volkswagen", label: "Volkswagen" },
-  { value: "Ford", label: "Ford" }, { value: "Chevrolet", label: "Chevrolet" },
-  { value: "Honda", label: "Honda" }, { value: "Hyundai", label: "Hyundai" },
-  { value: "Nissan", label: "Nissan" }, { value: "Renault", label: "Renault" },
-  { value: "Fiat", label: "Fiat" }, { value: "Peugeot", label: "Peugeot" },
-  { value: "Mercedes-Benz", label: "Mercedes-Benz" }, { value: "BMW", label: "BMW" },
-  { value: "Audi", label: "Audi" }, { value: "Kia", label: "Kia" },
-  { value: "Mazda", label: "Mazda" }, { value: "Otro", label: "Otro" }
-];
-
-const locations = [
-  { value: "CABA", label: "CABA" }, { value: "Provincia de Buenos Aires", label: "Provincia de Buenos Aires" },
-  { value: "Córdoba", label: "Córdoba" }, { value: "Rosario", label: "Rosario" },
-  { value: "Mendoza", label: "Mendoza" }, { value: "San Miguel de Tucumán", label: "San Miguel de Tucumán" },
-  { value: "La Plata", label: "La Plata" }, { value: "Mar del Plata", label: "Mar del Plata" },
-  { value: "Salta", label: "Salta" }, { value: "Santa Fe", label: "Santa Fe" },
-  { value: "San Juan", label: "San Juan" }, { value: "Resistencia", label: "Resistencia" },
-  { value: "Neuquén", label: "Neuquén" }, { value: "Otro", label: "Otro" }
-];
 
 export function AddSaleForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,7 +30,7 @@ export function AddSaleForm() {
     year: new Date().getFullYear().toString(),
     price: "",
     condition: "",
-    location: "Provincia de Buenos Aires",
+    location: "",
     notes: "",
   });
 
@@ -78,7 +60,7 @@ export function AddSaleForm() {
           <div className="space-y-2">
             <Label htmlFor="location">Ubicación</Label>
             <Combobox
-              items={locations}
+              items={provinces}
               selectedValue={formData.location}
               onChange={(value) => handleSelectChange("location", value)}
               placeholder="Selecciona o ingresa una ubicación"
