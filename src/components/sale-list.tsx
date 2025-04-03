@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import TransactionCard from "./sale-card";
+import { useState, useEffect } from "react";
+import TransactionCard from "./sale-card"; // Keep this name or rename to SaleCard
 import {
   Select,
   SelectContent,
@@ -10,65 +10,47 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// Sample data - in a real app, this would come from an API
-const transactions = [
-  {
-    id: 1,
-    brand: "Toyota",
-    model: "Corolla",
-    year: 2019,
-    price: 12500000,
-    currency: "ARS",
-    date: "2023-10-15",
-    location: "Buenos Aires",
-  },
-  {
-    id: 2,
-    brand: "Volkswagen",
-    model: "Golf",
-    year: 2020,
-    price: 14800000,
-    currency: "ARS",
-    date: "2023-10-12",
-    location: "Córdoba",
-  },
-  {
-    id: 3,
-    brand: "Ford",
-    model: "Focus",
-    year: 2018,
-    price: 11200000,
-    currency: "ARS",
-    date: "2023-10-10",
-    location: "Rosario",
-  },
-  {
-    id: 4,
-    brand: "Chevrolet",
-    model: "Cruze",
-    year: 2021,
-    price: 16500000,
-    currency: "ARS",
-    date: "2023-10-08",
-    location: "Mendoza",
-  },
-  {
-    id: 5,
-    brand: "Renault",
-    model: "Sandero",
-    year: 2020,
-    price: 9800000,
-    currency: "ARS",
-    date: "2023-10-05",
-    location: "Buenos Aires",
-  },
-];
+// Define the Sale type
+interface Sale {
+  id: number;
+  brand: string;
+  model: string;
+  year: number;
+  price: number;
+  currency: string;
+  date: string;
+  location: string;
+}
 
-export default function TransactionList() {
+export default function SalesList() {
   const [sortBy, setSortBy] = useState("date");
+  const [sales, setSales] = useState<Sale[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Sort transactions based on selected option
-  const sortedTransactions = [...transactions].sort((a, b) => {
+  // Fetch sales data from API
+  useEffect(() => {
+    const fetchSales = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/cars/sales");
+        if (!response.ok) {
+          throw new Error("Failed to fetch sales data");
+        }
+        const data: Sale[] = await response.json();
+        setSales(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSales();
+  }, []);
+
+  // Sort sales based on selected option
+  const sortedSales = [...sales].sort((a, b) => {
     if (sortBy === "price-asc") return a.price - b.price;
     if (sortBy === "price-desc") return b.price - a.price;
     if (sortBy === "date")
@@ -78,10 +60,20 @@ export default function TransactionList() {
     return 0;
   });
 
+  // Loading state
+  if (isLoading) {
+    return <div>Loading sales...</div>;
+  }
+
+  // Error state
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">Transacciones recientes</h2>
+        <h2 className="text-2xl font-semibold">Ventas recientes</h2>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground hidden sm:inline">
             Ordenar por:
@@ -102,8 +94,8 @@ export default function TransactionList() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sortedTransactions.map((transaction) => (
-          <TransactionCard key={transaction.id} transaction={transaction} />
+        {sortedSales.map((sale) => (
+          <TransactionCard key={sale.id} transaction={sale} />
         ))}
       </div>
     </div>

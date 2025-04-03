@@ -25,14 +25,30 @@ model CarModel {
 model CarSale {
   id         Int      @id @default(autoincrement())
   carModelId Int // Foreign key linking to CarModel
-  price      Float // Sale price
+  priceUsd   Float // Sale price in USD
+  priceArs   Float // Sale price in ARS
   saleDate   DateTime // Date of the sale
   location   String // Where the sale happened
   status     String // In what status was the car
   notes      String // Any other comments on the sale
+  userId     Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   // Relation: Each CarSale belongs to one CarModel
   carModel CarModel @relation(fields: [carModelId], references: [id], onDelete: Cascade)
+  // Relation: Each CarSale belongs to one User
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// User represents a user who can create car sales
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique // Unique email for each user
+  name      String // User's name
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation: A User can have many CarSales
+  carSales CarSale[] // Links to all sales made by this user
 }
