@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// CarModel represents a type of car (e.g., Toyota Camry 2020)
+model CarModel {
+  id          Int      @id @default(autoincrement())
+  make        String   // e.g., "Toyota", "Ford"
+  model       String   // e.g., "Camry", "Mustang"
+  version     String
+  year        Int      // e.g., 2020
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relation: A CarModel can have many CarSales
+  sales       CarSale[]
+}
+
+// CarSale represents an individual car sale
+model CarSale {
+  id          Int      @id @default(autoincrement())
+  carModelId  Int      // Foreign key linking to CarModel
+  price       Float    // Sale price
+  saleDate    DateTime // Date of the sale
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relation: Each CarSale belongs to one CarModel
+  carModel    CarModel @relation(fields: [carModelId], references: [id], onDelete: Cascade)
+}
