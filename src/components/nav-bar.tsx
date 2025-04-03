@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { SessionType } from "@/types/session";
 
 export function NavBar() {
   const { data: session, status } = useSession();
@@ -54,15 +55,15 @@ export function NavBar() {
   );
 }
 
-function UserMenu({ session }: { session: any }) {
+function UserMenu({ session }: { session: SessionType }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="cursor-pointer hover:scale-105">
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage
-              src={session.user.image || ""}
-              alt={session.user.name || ""}
+              src={session?.user?.image || ""}
+              alt={session?.user?.name || ""}
             />
             <AvatarFallback>
               <User className="h-4 w-4" />
@@ -73,10 +74,10 @@ function UserMenu({ session }: { session: any }) {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <div className="flex flex-col space-y-1 p-2">
           <p className="text-sm font-medium leading-none">
-            {session.user.name}
+            {session?.user?.name}
           </p>
           <p className="text-xs leading-none text-muted-foreground">
-            {session.user.email}
+            {session?.user?.email}
           </p>
         </div>
         <DropdownMenuSeparator />

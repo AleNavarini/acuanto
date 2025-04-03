@@ -48,12 +48,6 @@ export function UserProfile() {
       <CardContent className="text-sm">
         <div className="space-y-2">
           <div className="flex justify-between">
-            <span className="font-medium">Account ID</span>
-            <span className="text-muted-foreground">
-              {session.userId || "Not available"}
-            </span>
-          </div>
-          <div className="flex justify-between">
             <span className="font-medium">Authentication</span>
             <span className="text-muted-foreground">Google</span>
           </div>
