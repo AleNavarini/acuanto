@@ -16,13 +16,14 @@ import { Combobox } from "./ui/combobox";
 import { carBrands } from "@/data/carBrands";
 import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
+import { Span } from "next/dist/trace";
 
 
 // Car model schema
 const carModelSchema = z.object({
     brand: z.string().min(1, "Brand is required"),
     model: z.string().min(1, "Model is required"),
-    version: z.string().optional(),
+    version: z.string().nonempty().optional(),
 });
 
 interface CarModel {
@@ -43,6 +44,7 @@ export function ModelForm() {
     const [modelOptions, setModelOptions] = useState<{ label: string; value: string }[]>([]);
     const [versionOptions, setVersionOptions] = useState<{ label: string; value: string }[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [modelIsLoading, setModelIsLoading] = useState(false);
 
     const modelForm = useForm<z.infer<typeof carModelSchema>>({
         resolver: zodResolver(carModelSchema),
@@ -121,15 +123,18 @@ export function ModelForm() {
             label: version,
             value: version,
         })));
-        modelForm.setValue("version", "");
     }, [selectedModel, brandModels]);
 
     // Handle form submission to create a new model if it doesn't exist
     const onSubmit = async (data: z.infer<typeof carModelSchema>) => {
-        const modelExists = brandModels.some(m => m.model === data.model) && versionOptions.some(v => v.value == data.version);
-        console.log('Model exists', modelExists, data)
+        const modelExists = brandModels.some(m =>
+            m.model === data.model &&
+            (!data.version || m.version === data.version)
+        );
+
         if (!modelExists) {
             try {
+                setModelIsLoading(true);
                 const response = await fetch("/api/cars/models", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -141,16 +146,45 @@ export function ModelForm() {
                 });
 
                 if (!response.ok) {
-                    throw new Error("Failed to create model");
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "Failed to create model");
                 }
 
-                const newModel = await response.json();
+                const responseData = await response.json();
+                const newModel = responseData.newModel; // Match your API response structure
+
                 setBrandModels(prev => [...prev, newModel]);
-                setModelOptions(prev => [...prev, { label: data.model, value: data.model }]);
+                setModelOptions(prev => {
+                    const exists = prev.some(opt => opt.value === newModel.model);
+                    if (exists) return prev;
+                    return [...prev, { label: newModel.model, value: newModel.model }];
+                });
+
+                if (newModel.version) {
+                    setVersionOptions(prev => {
+                        const exists = prev.some(opt => opt.value === newModel.version);
+                        if (exists) return prev;
+                        return [...prev, { label: newModel.version, value: newModel.version }];
+                    });
+                }
+
+                // Explicitly set form values to persist the selection
+                modelForm.setValue("brand", newModel.make, { shouldValidate: true });
+                modelForm.setValue("model", newModel.model, { shouldValidate: true });
+                modelForm.setValue("version", newModel.version || "", { shouldValidate: true });
+
+                console.log('Form values after set:', modelForm.getValues());
+
             } catch (error) {
                 console.error("Error creating new model:", error);
-                return;
+                // Optionally show an error message to the user here
+            } finally {
+                setModelIsLoading(false);
             }
+        } else {
+            // If model exists, just set the form values
+            modelForm.setValue("model", data.model);
+            modelForm.setValue("version", data.version || "");
         }
     };
 
@@ -211,24 +245,33 @@ export function ModelForm() {
                                 <FormField
                                     control={modelForm.control}
                                     name="version"
-                                    render={({ field }) => (
-                                        <FormItem className="mt-4">
-                                            <FormLabel>Versión</FormLabel>
-                                            <FormControl>
-                                                <Combobox
-                                                    items={versionOptions}
-                                                    placeholder="Elija una versión o escriba una nueva"
-                                                    selectedValue={field.value}
-                                                    onChange={(value) => field.onChange(value)}
-                                                    allowCustomInput // Enable custom input for versions too
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
+                                    render={({ field }) => {
+                                        console.log('Version field value:', field.value);
+                                        console.log('Version options:', versionOptions);
+                                        return (
+                                            <FormItem className="mt-4">
+                                                <FormLabel>Versión</FormLabel>
+                                                <FormControl>
+                                                    <Combobox
+                                                        items={versionOptions}
+                                                        placeholder="Elija una versión o escriba una nueva"
+                                                        selectedValue={field.value || ''} // Ensure no undefined
+                                                        onChange={(value) => {
+                                                            console.log('Version changed to:', value);
+                                                            field.onChange(value);
+                                                        }}
+                                                        allowCustomInput
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        );
+                                    }}
                                 />
                             )}
-                            <Button type="submit" className="cursor-pointer">Buscar / Crear modelo</Button>
+                            <Button type="submit" className="cursor-pointer" disabled={modelIsLoading} >
+                                {modelIsLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <span>Buscar / Crear modelo</span>}
+                            </Button>
                         </>
                     )
                 )}

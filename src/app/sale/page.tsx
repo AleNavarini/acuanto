@@ -1,7 +1,4 @@
-import { AddSaleForm } from "@/components/add-sale-form";
 import { ModelForm } from "@/components/model-form";
-import { promises as fs } from 'fs';
-import path from 'path';
 import { JSX } from "react";
 
 interface Locality {

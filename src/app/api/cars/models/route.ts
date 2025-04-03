@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // Adjust the import based on your Prisma setup
+import { prisma } from "@/lib/prisma";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     try {
         const carModels = await prisma.carModel.findMany({
             where: {
-                make: brand, // Filter by brand in the database
+                make: brand,
             },
             select: {
                 id: true,
@@ -32,5 +32,33 @@ export async function GET(request: Request) {
             { error: "Failed to fetch car models" },
             { status: 500 }
         );
+    }
+}
+
+export async function POST(request: Request) {
+    try {
+        const { make, model, version } = await request.json();
+
+        const foundModel = await prisma.carModel.findFirst({
+            where: {
+                make,
+                model,
+                version
+            }
+        });
+        if (foundModel) return NextResponse.json({ error: "This car model already exists" }, { status: 400 });
+
+        const newModel = await prisma.carModel.create({
+            data: {
+                make,
+                model,
+                version
+            }
+
+        });
+
+        return NextResponse.json({ newModel });
+    } catch (error) {
+        return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 }
