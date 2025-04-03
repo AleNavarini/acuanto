@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Loader2, Chrome } from "lucide-react";
+import { Loader2, ChromeIcon } from "lucide-react";
 
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ export function SignUpForm() {
 
     try {
       await signIn("google", { callbackUrl: "/" });
-    } catch (error) {
+    } catch {
       setError("Something went wrong with Google sign up. Please try again.");
       setIsLoading(false);
     }
@@ -54,7 +54,7 @@ export function SignUpForm() {
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
-            <Chrome className="mr-2 h-4 w-4" />
+            <ChromeIcon className="mr-2 h-4 w-4" />
           )}
           Sign up with Google
         </Button>
