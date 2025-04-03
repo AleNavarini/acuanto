@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import TransactionCard from "./transaction-card";
+import TransactionCard from "./sale-card";
 import {
   Select,
   SelectContent,
