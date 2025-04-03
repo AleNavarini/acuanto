@@ -16,7 +16,6 @@ import { Combobox } from "./ui/combobox";
 import { carBrands } from "@/data/carBrands";
 import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
-import { Span } from "next/dist/trace";
 
 
 // Car model schema
@@ -81,13 +80,13 @@ export function ModelForm() {
                 setBrandModels(data.models);
 
                 // Extract unique model strings
-                const uniqueModels = data.models.length > 0
-                    ? [...new Set(data.models.map((m: CarModel) => m.model))]
-                    : [];
-                setModelOptions(uniqueModels.map((model: any) => ({
+                const uniqueModels: string[] = [...new Set(data.models.map((m: CarModel) => m.model))] as string[]
+
+                const uniques = uniqueModels.map((model: string) => ({
                     label: model,
                     value: model,
-                })));
+                }))
+                setModelOptions(uniques);
 
                 setVersionOptions([]);
                 modelForm.setValue("model", "");
@@ -103,7 +102,7 @@ export function ModelForm() {
         };
 
         fetchModelsByBrand();
-    }, [selectedBrand]);
+    }, [selectedBrand, modelForm]);
 
     // Filter versions in-memory based on selected model
     useEffect(() => {
@@ -123,7 +122,7 @@ export function ModelForm() {
             label: version,
             value: version,
         })));
-    }, [selectedModel, brandModels]);
+    }, [selectedModel, brandModels, modelForm, selectedBrand]);
 
     // Handle form submission to create a new model if it doesn't exist
     const onSubmit = async (data: z.infer<typeof carModelSchema>) => {

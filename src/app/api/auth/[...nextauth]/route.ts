@@ -11,7 +11,7 @@ const authOptions: NextAuthOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, profile }) {
       // This callback runs when a user signs in with Google
       try {
         // Check if the user already exists in the database by email

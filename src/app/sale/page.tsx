@@ -1,11 +1,6 @@
 import { ModelForm } from "@/components/model-form";
 import { JSX } from "react";
 
-interface Locality {
-    code: string;
-    name: string;
-}
-
 
 export default function AddSalePage(): JSX.Element {
     return (

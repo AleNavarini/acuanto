@@ -102,7 +102,7 @@ export function Combobox({
                         <CommandEmpty>
                             {allowCustomInput && inputValue ? (
                                 <CommandItem onSelect={() => handleCustomSelect(inputValue)}>
-                                    Use "{inputValue}"
+                                    Use &quot;{inputValue}&quot;
                                 </CommandItem>
                             ) : (
                                 "No results found."
@@ -136,7 +136,7 @@ export function Combobox({
                                             value === inputValue ? "opacity-100" : "opacity-0"
                                         )}
                                     />
-                                    Use "{inputValue}"
+                                    Use &quot;{inputValue}&quot;
                                 </CommandItem>
                             )}
                         </CommandGroup>
