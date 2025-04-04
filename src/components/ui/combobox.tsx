@@ -18,63 +18,33 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
+// Define the type for items
+type ComboboxItem = {
+    value: string
+    label: string
+}
+
+// Define props interface
 interface ComboboxProps {
-    items: { value: string; label: string }[];
-    placeholder?: string;
-    selectedValue?: string;
-    onChange: (value: string) => void;
-    allowCustomInput?: boolean;
+    items: ComboboxItem[]
+    placeholder?: string
+    searchPlaceholder?: string
+    width?: string
+    key?: string
+    onValueChange?: (value: string) => void // Optional callback for value changes
 }
 
 export function Combobox({
     items,
-    placeholder = "Select...",
-    selectedValue,
-    onChange,
-    allowCustomInput = false
+    placeholder = "Select item...",
+    searchPlaceholder = "Search items...",
+    width = "full",
+    key,
+    onValueChange,
 }: ComboboxProps) {
-    const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState(selectedValue || "");
-    const [inputValue, setInputValue] = React.useState("");
-    const [localItems, setLocalItems] = React.useState([...items]);
+    const [open, setOpen] = React.useState(false)
+    const [value, setValue] = React.useState("")
 
-    // Keep local state in sync with props
-    React.useEffect(() => {
-        setValue(selectedValue || "");
-    }, [selectedValue]);
-
-    React.useEffect(() => {
-        setLocalItems([...items]);
-    }, [items]);
-
-    const handleSelect = (currentValue: string) => {
-        const newValue = currentValue === value ? "" : currentValue;
-        setValue(newValue);
-        onChange(newValue);
-        setOpen(false);
-    };
-
-    const handleInputChange = (newInput: string) => {
-        setInputValue(newInput);
-        if (allowCustomInput) {
-            setValue(newInput);
-            onChange(newInput);
-        }
-    };
-
-    const handleCustomSelect = (customValue: string) => {
-        // First add to local items
-        if (!localItems.some(item => item.value === customValue)) {
-            setLocalItems(prev => [...prev, { label: customValue, value: customValue }]);
-        }
-
-        // Then select it
-        setValue(customValue);
-        onChange(customValue);
-        setOpen(false);
-    };
-
-    const isCustomInput = allowCustomInput && inputValue && !localItems.some((item) => item.value === inputValue);
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -83,66 +53,47 @@ export function Combobox({
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="justify-between w-full"
+                    className={`w-[${width}] justify-between`}
                 >
                     {value
-                        ? (localItems.find((item) => item.value === value)?.label || value)
+                        ? items.find((item) => item.value === value)?.label
                         : placeholder}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="p-0 w-[var(--radix-popover-trigger-width)]">
+            <PopoverContent className={`w-[${width}] p-0`}>
                 <Command>
-                    <CommandInput
-                        placeholder={`Search ${placeholder.toLowerCase()}...`}
-                        value={inputValue}
-                        onValueChange={handleInputChange}
-                    />
+                    <CommandInput placeholder={searchPlaceholder} />
                     <CommandList>
-                        <CommandEmpty>
-                            {allowCustomInput && inputValue ? (
-                                <CommandItem onSelect={() => handleCustomSelect(inputValue)}>
-                                    Use &quot;{inputValue}&quot;
-                                </CommandItem>
-                            ) : (
-                                "No results found."
-                            )}
-                        </CommandEmpty>
+                        <CommandEmpty>No item found.</CommandEmpty>
                         <CommandGroup>
-                            {localItems.map((item) => (
-                                <CommandItem
-                                    key={item.value}
-                                    value={item.value}
-                                    onSelect={() => handleSelect(item.value)}
-                                >
-                                    <Check
-                                        className={cn(
-                                            "mr-2 h-4 w-4",
-                                            value === item.value ? "opacity-100" : "opacity-0"
-                                        )}
-                                    />
-                                    {item.label}
-                                </CommandItem>
-                            ))}
-                            {isCustomInput && (
-                                <CommandItem
-                                    key="custom-input"
-                                    value={inputValue}
-                                    onSelect={() => handleCustomSelect(inputValue)}
-                                >
-                                    <Check
-                                        className={cn(
-                                            "mr-2 h-4 w-4",
-                                            value === inputValue ? "opacity-100" : "opacity-0"
-                                        )}
-                                    />
-                                    Use &quot;{inputValue}&quot;
-                                </CommandItem>
-                            )}
+                            {items.map((item) => {
+                                console.log(JSON.stringify(item, null, 2))
+                                return (
+                                    <CommandItem
+                                        key={`${key}-${item.value}`}
+                                        value={item.value}
+                                        onSelect={(currentValue) => {
+                                            setValue(currentValue === value ? "" : currentValue)
+                                            if (onValueChange) onValueChange(currentValue === value ? "" : currentValue)
+                                            setOpen(false)
+                                        }}
+                                    >
+                                        <Check
+                                            className={cn(
+                                                "mr-2 h-4 w-4",
+                                                value === item.value ? "opacity-100" : "opacity-0"
+                                            )}
+                                        />
+                                        {item.label}
+                                    </CommandItem>
+
+                                )
+                            })}
                         </CommandGroup>
                     </CommandList>
                 </Command>
             </PopoverContent>
         </Popover>
-    );
+    )
 }

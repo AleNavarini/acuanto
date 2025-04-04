@@ -3,9 +3,9 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
-    const brand = searchParams.get("brand");
+    const make = searchParams.get("make");
 
-    if (!brand) {
+    if (!make) {
         return NextResponse.json(
             { error: "Brand is required" },
             { status: 400 }
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     try {
         const carModels = await prisma.carModel.findMany({
             where: {
-                make: brand,
+                make: make,
             },
             select: {
                 id: true,

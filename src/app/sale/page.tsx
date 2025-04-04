@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { JSX } from "react";
 import Link from "next/link";
+import { SaleForm } from "@/components/sale-form";
 
 export default function AddSalePage(): JSX.Element {
     return (
@@ -16,6 +17,7 @@ export default function AddSalePage(): JSX.Element {
                     </Button>
                 </div>
             </div>
+            <SaleForm />
         </main>
     );
 }
