@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User } from "lucide-react";
+import { LogOut, PlusCircle, User } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { SessionType } from "@/types/session";
 
@@ -38,7 +38,15 @@ export function NavBar() {
               Loading...
             </Button>
           ) : isAuthenticated ? (
-            <UserMenu session={session} />
+            <div className="flex gap-2">
+              <Button size="sm" asChild>
+                <Link href="/sale">
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Agregar venta
+                </Link>
+              </Button>
+              <UserMenu session={session} />
+            </div>
           ) : (
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" asChild>

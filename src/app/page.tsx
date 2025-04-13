@@ -1,4 +1,4 @@
-import TransactionList from "@/components/transaction-list";
+import TransactionList from "@/components/sale-list";
 
 export default function Home() {
   return (
