@@ -18,7 +18,7 @@ export default function AboutPage() {
                     <strong>Una plataforma impulsada por la comunidad:</strong> A Cuanto? es mantenida por nuestra comunidad de usuarios, quienes comparten información sobre precios y ventas de autos. Confiamos en la honestidad y responsabilidad de nuestra comunidad para proporcionar datos veraces. Te pedimos que contribuyas con información precisa y actual, ya que la calidad de nuestra plataforma depende de la colaboración colectiva.
                 </p>
                 <p>
-                    <strong>Aviso legal:</strong> La información en A Cuanto? es proporcionada por los usuarios y se ofrece "tal cual", sin garantías de exactitud o integridad. No nos hacemos responsables por errores, omisiones o decisiones tomadas con base en los datos compartidos. Al usar nuestra plataforma, aceptas contribuir de manera responsable y verificar la información antes de actuar.
+                    <strong>Aviso legal:</strong> La información en A Cuanto? es proporcionada por los usuarios y se ofrece &quot;tal cual&quot;, sin garantías de exactitud o integridad. No nos hacemos responsables por errores, omisiones o decisiones tomadas con base en los datos compartidos. Al usar nuestra plataforma, aceptas contribuir de manera responsable y verificar la información antes de actuar.
                 </p>
                 <p>
                     Únete a nosotros y forma parte de una comunidad que valora la transparencia y la verdad en la compraventa de autos. Juntos, podemos construir un mercado más justo y confiable.
