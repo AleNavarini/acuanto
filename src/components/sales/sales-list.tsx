@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
     Select,
     SelectContent,
@@ -16,7 +16,7 @@ import SaleCard from "../sale-card";
 export default function SalesList({ initialSales }: { initialSales: CarSaleWithModel[] }) {
 
     const [sortBy, setSortBy] = useState("date");
-    const [sales, setSales] = useState<CarSaleWithModel[]>(initialSales);
+    const [sales] = useState<CarSaleWithModel[]>(initialSales);
 
     // Sort sales based on selected option
     const sortedSales = [...sales].sort((a, b) => {
