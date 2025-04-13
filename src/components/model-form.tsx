@@ -23,15 +23,9 @@ import { Button } from "./ui/button";
 const carModelSchema = z.object({
     make: z.string().min(1, "Make is required"),
     model: z.string().min(1, "Model is required"),
-    version: z.string().nonempty().optional(),
+    version: z.string().min(1, "Version is required"),
 });
 
-interface CarModel {
-    id: number;
-    make: string;
-    model: string;
-    version: string;
-}
 
 // Map carBrands to the Autocomplete format
 const makeOptions = carMakes.map((brand) => ({
@@ -91,8 +85,7 @@ export function ModelForm() {
                                     <Combobox
                                         items={makeOptions}
                                         placeholder="Elija una marca"
-                                        selectedValue={field.value}
-                                        onChange={(value) => field.onChange(value)}
+                                        onValueChange={(value) => field.onChange(value)} // Changed to onValueChange
                                     />
                                 </FormControl>
                                 <FormMessage />

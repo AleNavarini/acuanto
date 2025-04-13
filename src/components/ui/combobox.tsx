@@ -68,7 +68,6 @@ export function Combobox({
                         <CommandEmpty>No item found.</CommandEmpty>
                         <CommandGroup>
                             {items.map((item) => {
-                                console.log(JSON.stringify(item, null, 2))
                                 return (
                                     <CommandItem
                                         key={`${key}-${item.value}`}
