@@ -129,7 +129,7 @@ export function ModelForm() {
                     <Button type="submit" className="cursor-pointer">
                         {isLoading ? <Loader2 className="w-5 h-5 animate-spin" />
                             :
-                            <div>
+                            <div className='flex items-center gap-2'>
                                 <PlusCircle />
                                 Crear Modelo
                             </div>

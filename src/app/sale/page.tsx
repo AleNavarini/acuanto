@@ -3,6 +3,8 @@ import { JSX } from "react";
 import Link from "next/link";
 import { SaleForm } from "@/components/sale-form";
 
+export const dynamic = "force-dynamic";
+
 export default function AddSalePage(): JSX.Element {
     return (
         <main className="container mx-auto px-4 py-6">
