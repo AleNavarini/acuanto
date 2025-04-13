@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import TransactionCard from "./sale-card"; // Keep this name or rename to SaleCard
+import SaleCard from "./sale-card"; // Keep this name or rename to SaleCard
 import {
   Select,
   SelectContent,
@@ -95,7 +95,7 @@ export default function SalesList() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedSales.map((sale) => (
-          <TransactionCard key={sale.id} transaction={sale} />
+          <SaleCard key={sale.id} sale={sale} />
         ))}
       </div>
     </div>

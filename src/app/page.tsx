@@ -1,9 +1,9 @@
-import TransactionList from "@/components/sale-list";
+import { SalesWrapper } from "@/components/sales/sales-wrapper";
 
 export default function Home() {
   return (
     <main className="container mx-auto px-4 py-6">
-      <TransactionList />
+      <SalesWrapper />
     </main>
   );
 }
