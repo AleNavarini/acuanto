@@ -9,7 +9,7 @@ export default function AddSalePage(): JSX.Element {
             <div className="max-w-2xl mx-auto">
                 <div className="w-full flex justify-between">
                     <h1 className="text-3xl font-bold mb-6">Agregar venta</h1>
-                    <Button variant={"outline"} >
+                    <Button variant={"outline"} className="cursor-pointer" >
                         <Link href="/model" >
                             Agregar modelo
                         </Link>

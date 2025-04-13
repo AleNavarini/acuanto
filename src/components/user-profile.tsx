@@ -57,7 +57,7 @@ export function UserProfile() {
         <Button
           variant="outline"
           size="sm"
-          className="w-full"
+          className="w-full cursor-pointer"
           onClick={() => signOut({ callbackUrl: "/" })}
         >
           <LogOut className="mr-2 h-4 w-4" />
