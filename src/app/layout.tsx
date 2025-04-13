@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NavBar } from "@/components/nav-bar";
 import { AuthProvider } from "@/components/auth-provider";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
             <div className="flex min-h-screen flex-col">
               <NavBar />
               <div className="flex-1">{children}</div>
+              <Footer />
             </div>
           </AuthProvider>
         </ThemeProvider>
