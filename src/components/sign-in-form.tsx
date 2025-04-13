@@ -47,7 +47,7 @@ export function SignInForm() {
 
         <Button
           variant="outline"
-          className="w-full"
+          className="w-full cursor-pointer"
           onClick={handleGoogleSignIn}
           disabled={isLoading}
         >

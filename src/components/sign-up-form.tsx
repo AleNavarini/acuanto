@@ -47,7 +47,7 @@ export function SignUpForm() {
 
         <Button
           variant="outline"
-          className="w-full"
+          className="w-full cursor-pointer"
           onClick={handleGoogleSignUp}
           disabled={isLoading}
         >
