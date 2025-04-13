@@ -148,7 +148,7 @@ export function SaleForm() {
             make: "",
             model: "",
             version: "",
-            carYear: new Date().getFullYear(), // Default to current year
+            carYear: new Date().getFullYear(),
             priceUsd: 0,
             priceArs: 0,
             saleDate: undefined,
@@ -165,13 +165,13 @@ export function SaleForm() {
             form.setValue("version", "");
             setModel("");
         }
-    }, [make]);
+    }, [make, form]);
 
     useEffect(() => {
         if (model) {
             form.setValue("version", "");
         }
-    }, [model]);
+    }, [model, form]);
 
     const onSubmit = async (data: z.infer<typeof saleSchema>) => {
         setIsSubmitting(true);
@@ -273,77 +273,75 @@ export function SaleForm() {
                 )}
 
                 {/* Version Field */}
-                {isVersionsLoading ? (
-                    <LoadingIndicator message="Cargando versiones..." />
-                ) : versions.length === 0 ? (
+                {make ? (
                     model ? (
-                        <Alert variant="destructive">
-                            <AlertCircle className="h-4 w-4" />
-                            <AlertTitle>Sin versiones</AlertTitle>
-                            <AlertDescription>
-                                No se encontraron versiones para este modelo. Por favor, agregue una versión{' '}
-                                <Link href="/model" className="underline hover:text-white">
-                                    aquí
-                                </Link>.
-                            </AlertDescription>
-                        </Alert>
-                    ) : (
-                        <p className="text-muted-foreground">Seleccione un modelo para cargar versiones.</p>
-                    )
-                ) : (
-                    <FormField
-                        control={form.control}
-                        name="version"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Versión</FormLabel>
-                                <FormControl>
-                                    <Combobox
-                                        items={versions}
-                                        placeholder="Seleccione una versión"
-                                        onValueChange={(value) => {
-                                            field.onChange(value);
-                                            setVersion(value);
-                                        }}
-                                    />
-                                </FormControl>
-                                <FormDescription>
-                                    Si tu versión no está aquí, por favor carga el modelo{' '}
+                        isVersionsLoading ? (
+                            <LoadingIndicator message="Cargando versiones..." />
+                        ) : versions.length === 0 ? (
+                            <Alert variant="destructive">
+                                <AlertCircle className="h-4 w-4" />
+                                <AlertTitle>Sin versiones</AlertTitle>
+                                <AlertDescription>
+                                    No se encontraron versiones para este modelo. Por favor, agregue una versión{' '}
                                     <Link href="/model" className="underline hover:text-white">
                                         aquí
                                     </Link>.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                )}
-
-                {/* Car Year Field */}
-                {make && model && (
-                    <FormField
-                        control={form.control}
-                        name="carYear"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Año del auto</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="number"
-                                        placeholder="Ingrese el año del auto"
-                                        value={field.value ?? ""}
-                                        onChange={(e) => field.onChange(Number(e.target.value))}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                )}
+                                </AlertDescription>
+                            </Alert>
+                        ) : (
+                            <FormField
+                                control={form.control}
+                                name="version"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Versión</FormLabel>
+                                        <FormControl>
+                                            <Combobox
+                                                items={versions}
+                                                placeholder="Seleccione una versión"
+                                                onValueChange={(value) => {
+                                                    field.onChange(value);
+                                                    setVersion(value);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Si tu versión no está aquí, por favor carga el modelo{' '}
+                                            <Link href="/model" className="underline hover:text-white">
+                                                aquí
+                                            </Link>.
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )
+                    ) : (
+                        <p className="text-muted-foreground">Seleccione un modelo para cargar versiones.</p>
+                    )
+                ) : null}
 
                 {/* Additional Fields */}
-                {make && model && (
+                {make && model && version && (
                     <div className="grid grid-cols-2 gap-6">
+                        <FormField
+                            control={form.control}
+                            name="carYear"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Año del auto</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="Ingrese el año del auto"
+                                            value={field.value ?? ""}
+                                            onChange={(e) => field.onChange(Number(e.target.value))}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <FormField
                             control={form.control}
                             name="priceUsd"
