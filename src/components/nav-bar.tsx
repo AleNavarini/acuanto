@@ -95,6 +95,7 @@ function UserMenu({ session }: { session: SessionType }) {
             <span>Mis Ventas</span>
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"
           onClick={() => signOut({ callbackUrl: "/" })}

@@ -90,10 +90,9 @@ export default function SaleCard({
             <p className="text-xl font-bold">{formatPrice(priceArs, "ARS")}</p>
           </div>
         </div>
-
         {notes && (
-          <div className="mt-3 p-2 bg-gray-50 rounded-md text-sm">
-            <p className="text-muted-foreground">{notes}</p>
+          <div className="mt-3 text-sm">
+            <p className="text-muted-foreground">Observaciones: {notes}</p>
           </div>
         )}
       </CardContent>

@@ -217,6 +217,10 @@ export function EditSaleForm({ sale }: { sale: CarSaleWithModel }) {
 
     const onSubmit = async (data: z.infer<typeof saleSchema>) => {
         setIsSubmitting(true);
+        // Show loading overlay
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+
         try {
             const response = await fetch(`/api/cars/sales/${sale.id}`, {
                 method: "PUT",
@@ -237,6 +241,8 @@ export function EditSaleForm({ sale }: { sale: CarSaleWithModel }) {
             if (!response.ok) throw new Error("Error al actualizar la venta");
             router.push("/my-sales");
         } catch {
+            // Hide loading overlay on error
+            if (loadingOverlay) loadingOverlay.classList.add('hidden');
             form.setError("root", { message: "No se pudo actualizar la venta. Intente de nuevo." });
         } finally {
             setIsSubmitting(false);
