@@ -29,7 +29,7 @@ export function NavBar() {
             href="/"
             className="text-xl font-bold hover:scale-105 transition-all transition-300"
           >
-            A Cuanto?
+            A Quanto?
           </Link>
         </div>
         <div>

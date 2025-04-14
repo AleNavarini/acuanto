@@ -10,8 +10,8 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "A Cuanto?",
-  description: "Track and compare prices",
+  title: "A Quanto?",
+  description: "Pagina para saber a cuanto se compran y venden realmente los autos usados en argentina",
 };
 
 export default function RootLayout({
