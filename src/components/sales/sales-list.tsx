@@ -12,7 +12,13 @@ import { Input } from "@/components/ui/input";
 import { CarSaleWithModel } from "@/types/car-sale-with-model";
 import SaleCard from "../sale-card";
 
-export default function SalesList({ initialSales }: { initialSales: CarSaleWithModel[] }) {
+export default function SalesList({
+    initialSales,
+    showEditButton = false
+}: {
+    initialSales: CarSaleWithModel[],
+    showEditButton?: boolean
+}) {
     const [sortBy, setSortBy] = useState("date");
     const [sales] = useState<CarSaleWithModel[]>(initialSales);
     const [selectedBrand, setSelectedBrand] = useState<string>("all");
@@ -97,7 +103,7 @@ export default function SalesList({ initialSales }: { initialSales: CarSaleWithM
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredAndSortedSales.map((sale) => (
-                    <SaleCard key={sale.id} sale={sale} />
+                    <SaleCard key={sale.id} sale={sale} showEditButton={showEditButton} />
                 ))}
             </div>
         </div>

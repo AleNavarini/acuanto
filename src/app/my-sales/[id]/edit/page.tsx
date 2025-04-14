@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
+import { EditSaleForm } from "@/components/sales/edit-sale-form";
 
 export default async function EditSalePage({ params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
@@ -36,13 +37,8 @@ export default async function EditSalePage({ params }: { params: { id: string } 
     return (
         <div className="container mx-auto py-8">
             <h1 className="text-3xl font-bold mb-8">Editar Venta</h1>
-            <div className="bg-white p-6 rounded-lg shadow">
-                <p className="text-lg">Edit functionality coming soon...</p>
-                <p className="mt-4">Sale ID: {sale.id}</p>
-                <p>Car: {sale.carModel.make} {sale.carModel.model} {sale.carModel.version}</p>
-                <p>Year: {sale.carYear}</p>
-                <p>Price (USD): ${sale.priceUsd}</p>
-                <p>Price (ARS): ${sale.priceArs}</p>
+            <div className=" p-6 rounded-lg shadow">
+                <EditSaleForm sale={sale} />
             </div>
         </div>
     );

@@ -32,6 +32,7 @@ interface ComboboxProps {
     width?: string
     key?: string
     onValueChange?: (value: string) => void // Optional callback for value changes
+    initialValue?: string // Add initialValue prop
 }
 
 export function Combobox({
@@ -41,9 +42,10 @@ export function Combobox({
     width = "full",
     key,
     onValueChange,
+    initialValue = "", // Add initialValue with default empty string
 }: ComboboxProps) {
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("")
+    const [value, setValue] = React.useState(initialValue) // Use initialValue for initial state
 
 
     return (
