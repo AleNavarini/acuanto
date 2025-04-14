@@ -14,8 +14,5 @@ const fetchSales = async () => {
 
 export async function SalesWrapper() {
     const sales = await fetchSales()
-
-    return (
-        <SalesList initialSales={sales} />
-    )
+    return <SalesList initialSales={sales} />
 }
