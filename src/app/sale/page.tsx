@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { JSX } from "react";
 import Link from "next/link";
 import { SaleForm } from "@/components/sale-form";
+import { Suspense } from "react";
+import { LoadingPage } from "@/components/loading-page";
 
-export default function AddSalePage(): JSX.Element {
+export default function AddSalePage() {
     return (
         <main className="container mx-auto px-4 py-6">
             <div className="max-w-2xl mx-auto">
@@ -16,7 +17,9 @@ export default function AddSalePage(): JSX.Element {
                     </Button>
                 </div>
             </div>
-            <SaleForm />
+            <Suspense fallback={<LoadingPage />}>
+                <SaleForm />
+            </Suspense>
         </main>
     );
 }
