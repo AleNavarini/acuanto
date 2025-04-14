@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, PlusCircle, User } from "lucide-react";
+import { LogOut, PlusCircle, User, List } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { SessionType } from "@/types/session";
 
@@ -89,6 +89,12 @@ function UserMenu({ session }: { session: SessionType }) {
           </p>
         </div>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/my-sales" className="cursor-pointer">
+            <List className="mr-2 h-4 w-4" />
+            <span>Mis Ventas</span>
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer"
           onClick={() => signOut({ callbackUrl: "/" })}
