@@ -3,8 +3,6 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import SalesList from "@/components/sales/sales-list";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export default async function MySalesPage() {
     const session = await getServerSession(authOptions);
