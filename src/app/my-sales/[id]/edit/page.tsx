@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { EditSaleForm } from "@/components/sales/edit-sale-form";
 import { Loader2 } from "lucide-react";
 
-export default async function EditSalePage({ params }: { params: { id: string } }) {
+export default async function EditSalePage({ params }: { params: Promise<{ id: string }> }) {
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.email) {
@@ -21,9 +21,12 @@ export default async function EditSalePage({ params }: { params: { id: string } 
         redirect("/login");
     }
 
+
+    const { id } = await params
+
     const sale = await prisma.carSale.findFirst({
         where: {
-            id: parseInt(params.id),
+            id: parseInt(id),
             userId: user.id,
         },
         include: {

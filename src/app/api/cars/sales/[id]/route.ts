@@ -20,9 +20,10 @@ const saleInputSchema = z.object({
 
 export async function PUT(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params
         const session = await getServerSession(authOptions);
         if (!session?.user?.email) {
             return NextResponse.json(
@@ -46,7 +47,7 @@ export async function PUT(
         // Verify the sale belongs to the user
         const existingSale = await prisma.carSale.findFirst({
             where: {
-                id: parseInt(params.id),
+                id: parseInt(id),
                 userId: user.id,
             },
         });
@@ -84,7 +85,7 @@ export async function PUT(
         // Update the CarSale
         const updatedSale = await prisma.carSale.update({
             where: {
-                id: parseInt(params.id),
+                id: parseInt(id),
             },
             data: {
                 carModelId: carModel.id,

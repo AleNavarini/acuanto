@@ -101,7 +101,7 @@ function useCarData(initialMake: string, initialModel: string) {
         }
     };
 
-    const fetchVersions = async (make: string, model: string, allModels?: any[]) => {
+    const fetchVersions = async (make: string, model: string, allModels?: { model: string; version: string }[]) => {
         setIsVersionsLoading(true);
         setError(null);
         try {
@@ -141,7 +141,7 @@ function useCarData(initialMake: string, initialModel: string) {
             }
         };
         fetchInitialData();
-    }, []); // Only run on mount
+    }, [initialMake, initialModel]); // Only run on mount
 
     // Handle make changes
     const handleMakeChange = async (make: string) => {
@@ -169,7 +169,6 @@ export function EditSaleForm({ sale }: { sale: CarSaleWithModel }) {
     const router = useRouter();
     const [make, setMake] = useState(sale.carModel.make);
     const [model, setModel] = useState(sale.carModel.model);
-    const [version, setVersion] = useState(sale.carModel.version);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const {
         models,
@@ -205,7 +204,7 @@ export function EditSaleForm({ sale }: { sale: CarSaleWithModel }) {
             setModel("");
             handleMakeChange(make);
         }
-    }, [make, form, sale.carModel.make]);
+    }, [make, form, sale.carModel.make, handleMakeChange]);
 
     // Handle model changes
     useEffect(() => {
@@ -213,7 +212,7 @@ export function EditSaleForm({ sale }: { sale: CarSaleWithModel }) {
             form.setValue("version", "");
             handleModelChange(make, model);
         }
-    }, [model, make, form, sale.carModel.model]);
+    }, [model, make, form, sale.carModel.model, handleModelChange]);
 
     const onSubmit = async (data: z.infer<typeof saleSchema>) => {
         setIsSubmitting(true);
@@ -350,7 +349,6 @@ export function EditSaleForm({ sale }: { sale: CarSaleWithModel }) {
                                                 items={versions}
                                                 placeholder="Seleccione una versión"
                                                 onValueChange={(value) => {
-                                                    setVersion(value);
                                                     field.onChange(value);
                                                 }}
                                                 initialValue={field.value}
