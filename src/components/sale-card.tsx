@@ -1,7 +1,9 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, MapPin, Car } from "lucide-react"
+import { Calendar, MapPin, Car, Pencil } from "lucide-react"
 import type { CarSaleWithModel } from "@/types/car-sale-with-model"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 // Format price with Argentine Peso format
 function formatPrice(price: number, currency: string): string {
@@ -53,13 +55,19 @@ function getStatusColor(statusValue: string): string {
   }
 }
 
-export default function SaleCard({ sale }: { sale: CarSaleWithModel }) {
-  const { carModel, carYear, location, notes, priceArs, priceUsd, saleDate, status } = sale
+export default function SaleCard({
+  sale,
+  showEditButton = false
+}: {
+  sale: CarSaleWithModel,
+  showEditButton?: boolean
+}) {
+  const { carModel, carYear, location, notes, priceArs, priceUsd, saleDate, status, id } = sale
 
   const { make, model, version } = carModel
 
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow">
+    <Card className="overflow-hidden hover:shadow-md transition-shadow relative">
       <div className="relative h-48 w-full bg-gray-100 flex items-center justify-center">
         <Car size={64} className="text-gray-400" />
       </div>
@@ -82,10 +90,9 @@ export default function SaleCard({ sale }: { sale: CarSaleWithModel }) {
             <p className="text-xl font-bold">{formatPrice(priceArs, "ARS")}</p>
           </div>
         </div>
-
         {notes && (
-          <div className="mt-3 p-2 bg-gray-50 rounded-md text-sm">
-            <p className="text-muted-foreground">{notes}</p>
+          <div className="mt-3 text-sm">
+            <p className="text-muted-foreground">Observaciones: {notes}</p>
           </div>
         )}
       </CardContent>
@@ -99,6 +106,16 @@ export default function SaleCard({ sale }: { sale: CarSaleWithModel }) {
           <span>{location}</span>
         </div>
       </CardFooter>
+      {showEditButton && (
+        <div className="absolute bottom-4 right-4">
+          <Link href={`/my-sales/${id}/edit`}>
+            <Button variant="default" size="sm" className="gap-2 cursor-pointer">
+              <Pencil className="h-4 w-4" />
+              Editar
+            </Button>
+          </Link>
+        </div>
+      )}
     </Card>
   )
 }
